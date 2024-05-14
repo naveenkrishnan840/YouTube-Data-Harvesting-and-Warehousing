@@ -51,8 +51,8 @@ def show_channel_details(channel_list, video_list, comment_list):
                 with cnt_col2:
                     st.write(f"{video_list[i]["favorite_count"]} Favorite")
                     st.write(f"{video_list[i]["comment_count"]} Comments")
-                st.write(f"Published Date {video_list[i]["published_date"]}")
                 st.write(f"Duration {video_list[i]["duration"]}")
+                st.write(f"Published Date {video_list[i]["published_date"]}")
             st.write(video_list[i]["video_description"])
             comment_tab = st.tabs(["Comment"])
             with comment_tab[0]:
@@ -240,7 +240,8 @@ if click_btn and channel_id:
             videos_result = connect_db.connection.query(sql="select t1.video_id, t1.channel_id, t1.playlist_id, "
                                                             "t1.video_name, t1.video_description, t1.published_date, "
                                                             "t1.views_count, t1.like_count, t1.favorite_count, "
-                                                            "t1.comment_count, sec_to_time(t1.duration) duration, "
+                                                            "t1.comment_count, TIME_FORMAT(SEC_TO_TIME(t1.duration), "
+                                                            "'%H-%i-%s') duration, "
                                                             "t1.video_thumbnail, t1.caption_status, "
                                                             "t2.* from tbl_videos_list t1 inner join "
                                                             "tbl_comments t2 on t1.video_id = t2.video_id "
