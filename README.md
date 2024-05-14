@@ -22,8 +22,13 @@ Totaly Two pages used.
       - BuildYouTubeApi class
           - get_channel method
           - get_videos_with_comments method
-       
+            
+  Once records from the database or api, then i will show records in UI
+
+
   - UI Parts method
       - show_channel_details
+- pages/query-page file
+    - In select box have 10 question to select and execute the query from mysql database in dataframe format and show in grid 
 
-Once records from the database or api, then i will show records in UI
+
