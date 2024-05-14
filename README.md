@@ -8,6 +8,7 @@ In The Project we have Streamlit used to build the application responsively
 Totaly Two pages used.
   - First page(main)
       - youtube streaming process, database connectivity, Create Table, Insert& update proacess in mysql.
+      - Use google api key to connect youtube Streaming API and get channel and videos with comment against channel.
   - Second page
       - TO solve question from project based on records in the sql
       - Each and every question have separate query based on condition to show in the page.
