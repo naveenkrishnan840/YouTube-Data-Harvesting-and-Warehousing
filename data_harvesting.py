@@ -10,7 +10,7 @@ api_key = "AIzaSyDkwuwXPvS1E-4-qntlkvE7TFfz9JcrylE"
 
 st.title("YouTube Api Harvesting")
 
-channel_id = st.text_input(label="input")
+channel_id = st.text_input(label="Channel ID")
 
 click_btn = st.button("YouTube Streaming") if channel_id else None
 
