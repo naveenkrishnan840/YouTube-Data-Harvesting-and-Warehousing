@@ -13,17 +13,17 @@ Totaly Two pages used.
       - Each and every question have separate query based on condition to show in the page.
 
 ## Project Structure
-
-- Totally Two classes is used
-    - Database class
-        - initialize_db method
-        - create_table method
-        - insert_records method
-    - BuildYouTubeApi class
-        - get_channel method
-        - get_videos_with_comments method
-     
-- UI Parts method
-    - show_channel_details
+- data_harvesting file
+  - Totally Two classes is used
+      - Database class
+          - initialize_db method
+          - create_table method
+          - insert_records method
+      - BuildYouTubeApi class
+          - get_channel method
+          - get_videos_with_comments method
+       
+  - UI Parts method
+      - show_channel_details
 
 Once records from the database or api, then i will show records in UI
