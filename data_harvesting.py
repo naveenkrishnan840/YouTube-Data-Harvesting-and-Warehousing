@@ -12,16 +12,21 @@ st.title("YouTube Api Harvesting")
 
 channel_id = st.text_input(label="input")
 
-click_btn = st.button("button")
+click_btn = st.button("YouTube Streaming") if channel_id else None
 
 
 def show_channel_details(channel_list, video_list, comment_list):
+    """
+    :param channel_list:
+    :param video_list:
+    :param comment_list:
+    :return:
+    """
     cols = st.columns([2, 3])
     print("channel_list", channel_list)
     with cols[0]:
         st.image(channel_list["channel_thumbnail"],
                  width=200, caption=channel_list["channel_name"])
-
     with cols[1]:
         st.title(channel_list["channel_name"])
         st.write(f"@{channel_list['channel_name'].lower()}.{channel_list['channel_subscriber_count']} subscribers‧"
@@ -98,6 +103,12 @@ class Database:
                 raise e
 
     def insert_records(self, channel, videos_list, comment_list):
+        """
+        :param channel:
+        :param videos_list:
+        :param comment_list:
+        :return:
+        """
         with self.connection.session as session:
             try:
                 session.begin()
@@ -126,6 +137,12 @@ class Database:
 
 class BuildYouTubeApi:
     def __init__(self, api_service_name, api_version, api_key, channel_id):
+        """
+        :param api_service_name:
+        :param api_version:
+        :param api_key:
+        :param channel_id:
+        """
         self.api_service_name = api_service_name
         self.api_version = api_version
         self.api_key = api_key
@@ -135,6 +152,9 @@ class BuildYouTubeApi:
                                                            developerKey=self.api_key)
 
     def get_channel(self):
+        """
+        :return: Channel
+        """
         response = self.youtube_api.channels().list(part="snippet,contentDetails,statistics", id=channel_id).execute()
         if response.get("items"):
             channels_list = response["items"][0]
@@ -147,13 +167,14 @@ class BuildYouTubeApi:
                 "channel_video_count": channels_list["statistics"]["videoCount"],
                 "channel_views": channels_list["statistics"]["viewCount"],
                 "channel_thumbnail": channels_list["snippet"]["thumbnails"]["default"]["url"]
-                # "channel_type": "",
-                # "channel_status": ""
             }
         else:
             return None
 
     def get_videos_with_comments(self):
+        """
+        :return: videos, comments
+        """
         channel_playlist_response = self.youtube_api.playlistItems().list(part="snippet,contentDetails",
                                                                           playlistId=self.channel_playlist_id).execute()
 
@@ -162,13 +183,6 @@ class BuildYouTubeApi:
         comment_list = []
         for i in playlist_res:
             video_id = i["contentDetails"]["videoId"]
-            # if isinstance(playlist_res, dict):
-            #     video_ids_list = [playlist_res["videoId"]]
-            #
-            # else:
-            #     video_ids_list = [i["videoId"] for i in playlist_res]
-            #
-            # for video_id in video_ids_list:
             channel_videos_response = self.youtube_api.videos().list(part="snippet,contentDetails,statistics,status",
                                                                      id=video_id).execute()
             video_res = channel_videos_response["items"][0]
@@ -215,16 +229,10 @@ if click_btn and channel_id:
                                                     f"channel_video_count "
                                                     f"from tbl_channels where channel_id = '{channel_id}'",
                                                 )
-        print("channel_id", channel_id)
-        print(get_ch_id)
 
+        # Dataframe is empty hit database & get the records otherwise api records will show in grid
         if get_ch_id.empty:
             video_list, comment_list = youtube_api.get_videos_with_comments()
-
-            print("channel_list", channel_list)
-            # print("video_list", video_list)
-            # print("comment_list", comment_list)
-
             connect_db.insert_records(channel_list, video_list, comment_list)
             # Show Channel Details in the page
             show_channel_details(channel_list, video_list, comment_list)
@@ -238,7 +246,7 @@ if click_btn and channel_id:
                                                             "tbl_comments t2 on t1.video_id = t2.video_id "
                                                             "where t1.channel_id = :id", params={"id": channel_id})
 
-            # df_videos = st.dataframe(videos_result)
+            # Split Columns in given dataframe based on variables
             video_list, comment_list = (videos_result.iloc[:, range(13)].to_dict(orient='records'),
                                         videos_result.iloc[:, range(13, 18)].to_dict(orient='records'))
             print('orient="records")[0]', get_ch_id.to_dict(orient="records")[0])
