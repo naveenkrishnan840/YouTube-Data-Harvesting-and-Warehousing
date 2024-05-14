@@ -24,8 +24,8 @@ def show_channel_details(channel_list, video_list, comment_list):
 
     with cols[1]:
         st.title(channel_list["channel_name"])
-        st.write(f"@{channel_list["channel_name"].lower()}.{channel_list["channel_subscriber_count"]} subscribers‧"
-                 f"{channel_list["channel_video_count"]} videos")
+        st.write(f"@{channel_list['channel_name'].lower()}.{channel_list['channel_subscriber_count']} subscribers‧"
+                 f"{channel_list['channel_video_count']} videos")
         st.write(channel_list["channel_description"])
 
     tab_list = ["Video " + str(i) for i in range(1, len(video_list) + 1)]
