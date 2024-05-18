@@ -3,7 +3,7 @@ import googleapiclient.discovery
 from sqlalchemy import text
 from datetime import datetime
 from isodate import parse_duration
-
+import streamlit.components.v1 as components
 api_service_name = "youtube"
 api_version = "v3"
 api_key = "AIzaSyDkwuwXPvS1E-4-qntlkvE7TFfz9JcrylE"
@@ -42,7 +42,8 @@ def show_channel_details(channel_list, video_list, comment_list):
             st.header(video_list[i]["video_name"])
             video_col1, video_col2 = st.columns([2, 3])
             with video_col1:
-                st.image(video_list[i]["video_thumbnail"], width=200)
+                # st.image(video_list[i]["video_thumbnail"], width=200)
+                components.iframe(f"https://www.youtube.com/embed/{video_list[i]["video_id"]}", height=200, width=250)
             with video_col2:
                 cnt_col1, cnt_col2 = st.columns(2)
                 with cnt_col1:
@@ -75,6 +76,8 @@ class Database:
         with self.connection.session as session:
             try:
                 session.begin()
+                session.execute(text("SET PERSIST sql_mode = (SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', "
+                                     "''))"))
                 session.execute(text("CREATE TABLE IF NOT EXISTS tbl_channels("
                                      "channel_id varchar(255) NOT NULL UNIQUE, "
                                      "channel_name VARCHAR(255) NOT NULL, "
@@ -137,7 +140,8 @@ class Database:
 
 class BuildYouTubeApi:
     def __init__(self, api_service_name, api_version, api_key, channel_id):
-        """
+        """Select
+What are the names of all the videos and their corresponding channels?
         :param api_service_name:
         :param api_version:
         :param api_key:
@@ -227,8 +231,8 @@ if click_btn and channel_id:
         get_ch_id = connect_db.connection.query(sql=f"select channel_id, channel_name, channel_description, "
                                                     f"channel_views, channel_subscriber_count, channel_thumbnail, "
                                                     f"channel_video_count "
-                                                    f"from tbl_channels where channel_id = '{channel_id}'",
-                                                )
+                                                    f"from tbl_channels where channel_id = :id",
+                                                params={"id": channel_id})
 
         # Dataframe is empty hit database & get the records otherwise api records will show in grid
         if get_ch_id.empty:
