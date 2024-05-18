@@ -31,6 +31,3 @@ Totaly Two pages used.
       - show_channel_details
 - pages/query-page file
     - In select box have 10 question to select and execute the query from mysql database in dataframe format and show in grid 
-
-
-![Alt text]()
