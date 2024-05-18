@@ -12,7 +12,7 @@ st.title("YouTube Api Harvesting")
 
 channel_id = st.text_input(label="Channel ID")
 
-click_btn = st.button("YouTube Streaming") if channel_id else None
+click_btn = st.button("Show Channel") if channel_id else None
 
 
 def show_channel_details(channel_list, video_list, comment_list):
@@ -29,8 +29,9 @@ def show_channel_details(channel_list, video_list, comment_list):
                  width=200, caption=channel_list["channel_name"])
     with cols[1]:
         st.title(channel_list["channel_name"])
-        st.write(f"@{channel_list['channel_name'].lower()}.{channel_list['channel_subscriber_count']} subscribers‧"
-                 f"{channel_list['channel_video_count']} videos")
+        st.write(f"@{channel_list['channel_name'].lower()}‧"
+                 f"  **{channel_list['channel_subscriber_count']}** subscribers‧"
+                 f"  **{channel_list['channel_video_count']}** videos")
         st.write(channel_list["channel_description"])
 
     tab_list = ["Video " + str(i) for i in range(1, len(video_list) + 1)]
