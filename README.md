@@ -1,6 +1,6 @@
 # YouTube Data Harvesting and Warehousing using SQL and Streamlit
 
-## Tech Stack: Python scripting, Data Collection, Streamlit, Google API integration, Data Management using MySQL
+## Tech Stack: Python scripting, Data Collection, Streamlit, mysqlSqlClient, Google API integration, Data Management using MySQL
 
 ## Social Meda - YouTube
 
